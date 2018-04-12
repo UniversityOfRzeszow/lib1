@@ -1,4 +1,4 @@
-﻿CREATE SEQUENCE author_id_seq;
+CREATE SEQUENCE author_id_seq;
 CREATE TABLE authors (
     id smallint NOT NULL DEFAULT nextval('author_id_seq'),
     name CHARACTER VARYING,
@@ -14,19 +14,20 @@ CREATE TABLE books (
     title CHARACTER VARYING,
     publisher CHARACTER VARYING,
     year CHARACTER VARYING,
-    desc CHARACTER VARYING,
+    description CHARACTER VARYING,
     author_id SMALLINT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (author_id) REFERENCES authors (id)
+    PRIMARY KEY (id)
+    --FOREIGN KEY (author_id) REFERENCES books_authors (id)
  );
 
  --ALTER TABLE books 
  -- ADD COLUMN publisher CHARACTER VARYING,
  --- ADD COLUMN description CHARACTER VARYING;
 
- --INSERT INTO books (title, year, author_id) VALUES ('Krzyżacy',1990, 1, 'Nowa Era', 'Krzyżacy - ciężka książka');
+ INSERT INTO books (title, publisher, year, description) 
+ VALUES ('Krzyżacy', 'Nowa Era', 1990, 'Krzyżacy - ciężka książka');
 
- SELECT * FROM authors;
+ --SELECT * FROM authors;
 
  CREATE TABLE books_authors (
 	author_id SMALLINT,
@@ -35,7 +36,17 @@ CREATE TABLE books (
 	FOREIGN KEY (book_id) REFERENCES books(id)
 )
 
-INSERT INTO books_authors (author_id, book_id) VALUES (1,1);
+INSERT INTO books_authors (author_id, book_id) VALUES (
+(SELECT id FROM authors limit 1)
+,
+(SELECT id FROM books limit 1)
+);
+
+--select * from authors;
+--select * from books;
+
+select * from books_authors;
+
 
 SELECT * 
   FROM books 
@@ -45,4 +56,3 @@ SELECT *
     ON authors.id = books_authors.author_id;
 
 
-    
